@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Orbital\Security;
 
@@ -12,7 +13,7 @@ abstract class Security {
      * Recommended to use in ALL user and browser input values
      * @return string
      */
-    public static function stripTags($value){
+    public static function stripTags($value): string {
         $value = strip_tags($value);
         return $value;
     }
@@ -22,7 +23,7 @@ abstract class Security {
      * Recommended to use in ALL user and browser input values
      * @return string
      */
-    public static function escapeHTML($value){
+    public static function escapeHTML($value): string {
         $value = htmlspecialchars($value);
         return $value;
     }
@@ -33,7 +34,7 @@ abstract class Security {
      * Not recommended if shell are executed on Windows
      * @return string
      */
-    public static function escapeShell($value){
+    public static function escapeShell($value): string {
         $value = escapeshellarg($value);
         return $value;
     }
@@ -42,7 +43,7 @@ abstract class Security {
      * Retrieve CSRF token from request
      * @return mixed
      */
-    public static function getCsrfKey(){
+    public static function getCsrfKey(): mixed {
 
         $csrf = Request::request('csrf');
 
@@ -51,7 +52,7 @@ abstract class Security {
         }
 
         if( !$csrf ){
-            $csrf = NULL;
+            $csrf = null;
         }
 
         return $csrf;
@@ -62,7 +63,7 @@ abstract class Security {
      * @param string $scope
      * @return string
      */
-    public static function generateCsrfKey($scope = 'csrf'){
+    public static function generateCsrfKey(string $scope = 'csrf'): string {
 
         $id = (string) Session::id();
         $token = bin2hex(random_bytes(32));
@@ -78,7 +79,7 @@ abstract class Security {
      * @param string $scope
      * @return string
      */
-    public static function retrieveCsrfKey($scope = 'csrf'){
+    public static function retrieveCsrfKey(string $scope = 'csrf'): string {
 
         $token = Session::get('csrf_'. $scope);
 
@@ -94,7 +95,7 @@ abstract class Security {
      * @param string $scope
      * @return string
      */
-    public static function csrfInput($scope = 'csrf'){
+    public static function csrfInput(string $scope = 'csrf'): string {
         $token = self::retrieveCsrfKey($scope);
         return '<input type="hidden" name="csrf" value="'. $token. '"/>';
     }
@@ -105,16 +106,16 @@ abstract class Security {
      * @param string $scope
      * @return boolean
      */
-    public static function validateCsrfKey($key = NULL, $scope = 'csrf'){
+    public static function validateCsrfKey(string $key = null, string $scope = 'csrf'): bool {
 
-        if( $key === NULL ){
+        if( is_null($key) ){
             $key = self::getCsrfKey();
         }
 
         $token = self::retrieveCsrfKey($scope);
 
         if( !$token OR !$key ){
-            return FALSE;
+            return false;
         }
 
         return (boolean) hash_equals($token, $key);

@@ -16,9 +16,9 @@ abstract class Encryption {
      * @return string
      * @throws RangeException
      */
-    public static function encrypt($message, $key = NULL){
+    public static function encrypt(string $message, string $key = null): string {
 
-        if( $key === NULL ){
+        if( is_null($key) ){
             $key = Env::get('ENCRYPTION_SALT');
         }
 
@@ -50,9 +50,9 @@ abstract class Encryption {
      * @return string
      * @throws Exception
      */
-    public static function decrypt($encrypted, $key = NULL){
+    public static function decrypt(string $encrypted, string $key = null): string {
 
-        if( $key === NULL ){
+        if( is_null($key) ){
             $key = Env::get('ENCRYPTION_SALT');
         }
 
@@ -78,7 +78,7 @@ abstract class Encryption {
         );
 
         if( !is_string($plain) ){
-            throw new Exception('Invalid MAC');
+            throw new Exception('Invalid MAC.');
         }
 
         sodium_memzero($cipherText);
