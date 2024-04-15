@@ -13,7 +13,7 @@ abstract class Security {
      * Recommended to use in ALL user and browser input values
      * @return string
      */
-    public static function stripTags($value): string {
+    public static function stripTags(string $value): string {
         $value = strip_tags($value);
         return $value;
     }
@@ -23,7 +23,7 @@ abstract class Security {
      * Recommended to use in ALL user and browser input values
      * @return string
      */
-    public static function escapeHTML($value): string {
+    public static function escapeHTML(string $value): string {
         $value = htmlspecialchars($value);
         return $value;
     }
@@ -34,7 +34,7 @@ abstract class Security {
      * Not recommended if shell are executed on Windows
      * @return string
      */
-    public static function escapeShell($value): string {
+    public static function escapeShell(string $value): string {
         $value = escapeshellarg($value);
         return $value;
     }
